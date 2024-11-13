@@ -1,41 +1,42 @@
-# Basic Authentication: A Simple Security Mechanism
-Basic Authentication is a simple authentication scheme that sends the username and password encoded in base64 format in the Authorization header of an HTTP request.
+# Simple API
 
-## How It Works:
+Simple HTTP API for playing with `User` model.
 
-### Client Request:
 
-* The client sends an HTTP request to the server.
-* The client includes the username and password in the Authorization header, encoded in base64 format.
-* The header typically looks like this: Authorization: Basic <base64_encoded_credentials>
+## Files
 
-### Server Verification:
+### `models/`
 
-* The server receives the request and decodes the base64-encoded credentials.
-* The server verifies the username and password against its database or authentication service.
-* If the credentials are valid, the server grants access to the requested resource.
-* If the credentials are invalid, the server returns an unauthorized response.
+- `base.py`: base of all models of the API - handle serialization to file
+- `user.py`: user model
 
-Example:
+### `api/v1`
 
-If the username is "user" and the password is "password", the base64-encoded credentials would be "dXNlcjpwYXNzd29yZA==". The Authorization header would look like this:
+- `app.py`: entry point of the API
+- `views/index.py`: basic endpoints of the API: `/status` and `/stats`
+- `views/users.py`: all users endpoints
 
-Authorization: Basic dXNlcjpwYXNzd29yZA==
 
-### Security Considerations:
+## Setup
 
-While Basic Authentication is simple to implement, it has some significant security drawbacks:
+```
+$ pip3 install -r requirements.txt
+```
 
-* Plaintext Transmission: Although the credentials are encoded in base64, they are still transmitted in plaintext over the network. This makes them vulnerable to interception.
-* Lack of Encryption: The base64 encoding is not encryption. It's a simple encoding scheme that can be easily decoded.
-* Limited Security: Basic Authentication offers minimal security and is not suitable for sensitive applications.
 
-### When to Use Basic Authentication:
-* Low-Security Scenarios: For low-security scenarios where data privacy is not a major concern.
-* Internal Applications: For internal applications that are accessed within a trusted network.
+## Run
 
-### Alternatives to Basic Authentication:
-* Token-Based Authentication: A more secure approach that involves issuing tokens to authenticated users.
-* OAuth 2.0: A widely used authorization framework for web applications.
-* OpenID Connect: A protocol built on top of OAuth 2.0 that provides authentication and user information.
+```
+$ API_HOST=0.0.0.0 API_PORT=5000 python3 -m api.v1.app
+```
 
+
+## Routes
+
+- `GET /api/v1/status`: returns the status of the API
+- `GET /api/v1/stats`: returns some stats of the API
+- `GET /api/v1/users`: returns the list of users
+- `GET /api/v1/users/:id`: returns an user based on the ID
+- `DELETE /api/v1/users/:id`: deletes an user based on the ID
+- `POST /api/v1/users`: creates a new user (JSON parameters: `email`, `password`, `last_name` (optional) and `first_name` (optional))
+- `PUT /api/v1/users/:id`: updates an user based on the ID (JSON parameters: `last_name` and `first_name`)
