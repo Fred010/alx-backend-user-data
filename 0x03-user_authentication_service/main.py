@@ -4,9 +4,19 @@ Main file
 """
 from auth import Auth
 
-# Create an instance of the Auth class
-auth_instance = Auth()
+email = 'me@me.com'
+password = 'mySecuredPwd'
 
-# Call the _hash_password method
-hashed_password = auth_instance._hash_password("Hello Holberton")
-print(hashed_password)
+auth = Auth()
+
+try:
+    user = auth.register_user(email, password)
+    print("successfully created a new user!")
+except ValueError as err:
+    print("could not create a new user: {}".format(err))
+
+try:
+    user = auth.register_user(email, password)
+    print("successfully created a new user!")
+except ValueError as err:
+    print("could not create a new user: {}".format(err))
